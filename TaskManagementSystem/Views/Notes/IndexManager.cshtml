@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TaskManagementSystem.Models.Note>
+
+@{
+    ViewBag.Title = "Index";
+}
+@using Microsoft.AspNet.Identity;
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Project Name")
+        </th>
+        <th>
+            @Html.Label("Task Name")
+        </th>        
+        <th>
+            @Html.Label("Type")
+        </th>        
+        <th>
+            @Html.Label("Opened?")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Project.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProTask.Name)
+    </td>    
+    <td>
+        @Html.DisplayFor(modelItem => item.NotificationType)
+    </td>    
+    <td>
+        @Html.DisplayFor(modelItem => item.IsOpened)
+    </td>
+    <td>
+        @Html.ActionLink("Open", "OpenNote", new { id = item.Id })       
+    </td>
+</tr>
+    }
+
+</table>
+<div>
+    @Html.ActionLink("Back to List", "Index", "Home", new { userId = User.Identity.GetUserId() }, null)
+</div>

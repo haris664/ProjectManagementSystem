@@ -1,0 +1,84 @@
+﻿@model IEnumerable<TaskManagementSystem.Models.ProTask>
+@using TaskManagementSystem.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+@using Microsoft.AspNet.Identity;
+<h2>Developer Home Page</h2>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Project name")
+        </th>
+        <th>
+            @Html.Label("Task name")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedTime)
+        </th>
+        <th>
+            @Html.Raw("Completed%")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deadline)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var task in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => task.Project.Name)
+            </td>
+
+            <td>
+                @Html.ActionLink(task.Name, "Details", new { id = task.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => task.CreatedTime)
+            </td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped @(ProgressHelper.ClassSelector(task.CompletedPercentage))" role="progressbar" style="width: @task.CompletedPercentage%" aria-valuenow="@task.CompletedPercentage" aria-valuemin="0" aria-valuemax="100">@task.CompletedPercentage</div>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => task.Deadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => task.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => task.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditDeveloperTask", new { id = task.Id })
+            </td>
+            <td class="btn btn-success" style="margin-right:5px">
+                @Html.ActionLink("Urgent note", "Create", "Notes", new { ProjectId = task.Project.Id, ProTaskId = task.Id, ProjectName = task.Project.Name, TaskName = task.Name }, null)
+
+            </td>
+            @if (task.CompletedPercentage == 100)
+            {
+                <td class="btn btn-warning">
+                    @Html.ActionLink("Final note", "Comments", "ProTasks", new { id = task.Id }, null)
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Index", "Home")
+</div>
